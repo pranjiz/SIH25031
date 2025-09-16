@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Janhit Portal / जनहित पोर्टल</title>
+
+  <!-- Google fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    :root {
+      --accent: #0ea5a4;
+      --deep: #083c74;
+      --text-dark: #222;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; font-family: 'Roboto', sans-serif; }
+
+    body {
+      background: linear-gradient(to bottom, #d9e9ff, #b3d1ff, #80b3ff);
+      position: relative;
+      color: var(--text-dark);
+    }
+
+    /* Background image behind hero & cards */
+    .bg-image {
+      position: absolute;
+      top: 72px; /* start below header */
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: url("c:\Users\HP\Downloads\WhatsApp Image 2025-09-16 at 20.15.55_71b30ca5.jpg ") no-repeat center/cover;
+      opacity: 0.5;
+      background-size: contain;
+      width: 100%
+      z-index: 0;
+    }
+
+    /* Header */
+    .site-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      background: #fff;
+      border-bottom: 2px solid #0a58ca;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo-box {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #eee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .logo-box img {
+      width: 80px;
+      height: 60px;
+      object-fit: cover;
+    }
+    .titles {
+      font-weight: 700;
+      font-size: 20px;
+      color: #0a58ca;
+    }
+
+    /* Nav links in a row */
+    .nav {
+      display: flex;
+      gap: 18px;
+      margin-left: 30px;
+    }
+    .nav a {
+      font-size: 15px;
+      font-weight: 600;
+      color: #0a58ca;
+      text-decoration: none;
+    }
+    .nav a:hover { text-decoration: underline; }
+
+    /* Right side */
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .lang-select select {
+      padding: 4px 8px;
+      font-size: 14px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    .officer-login {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+      color: #0a58ca;
+      cursor: pointer;
+    }
+    .officer-login i { font-size: 18px; }
+
+    /* Hero */
+    .hero {
+      min-height: 55vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px 20px;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-main {
+      font-size: 40px;
+      font-weight: 700;
+      color: #04244d;
+      margin-bottom: 10px;
+    }
+    .hero-sub {
+      font-size: 18px;
+      font-weight: 500;
+      color: #044a9b;
+      font-family: 'Noto Sans Devanagari', sans-serif;
+    }
+    
+
+    /* Features */
+    .features {
+      max-width: 1100px;
+      margin: 30px auto 60px;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 28px;
+      position: relative;
+      z-index: 1;
+    }
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      min-height: 130px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      color: #222;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .card h4 {
+      margin-bottom: 10px;
+      font-size: 20px;
+      color: #0a58ca;
+    }
+    .card p { font-size: 18px; color: #444; }
+    .card input[type="file"] {
+      margin-top: 10px;
+    }
+
+    .features :hover{ color: #044a9b; opacity: 0.75;}
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 28px 12px;
+      color: #fff;
+      background: #0a58ca;
+      font-size: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Responsive */
+    @media (max-width: 980px) {
+      .features { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 520px) {
+      .features { grid-template-columns: 1fr; }
+      .hero-main { font-size: 28px; }
+      .nav { gap: 10px; margin-left: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- background image layer -->
+  <div class="bg-image">
+    <img src="c:\Users\HP\Downloads\WhatsApp Image 2025-09-16 at 20.15.55_71b30ca5.jpg " alt="bg-image">
+
+  </div>
+
+  <header class="site-header">
+    <div class="brand">
+      <div class="logo-box">
+        <img src="c:\Users\HP\Downloads\ChatGPT Image Sep 16, 2025, 11_37_55 AM.png " alt="Logo">
+      </div>
+      <div class="titles">Janhit Portal</div>
+      <nav class="nav">
+        <a href="#">Home</a>
+        <a href="#">Register</a>
+        <a href="#">Status</a>
+        <a href="#">Contact Us</a>
+      </nav>
+    </div>
+
+    <div class="header-right">
+      <div class="lang-select">
+        <select id="langSwitcher">
+          <option value="en">English</option>
+          <option value="hi">हिन्दी</option>
+        </select>
+      </div>
+      <div class="officer-login">
+        <i class="fa fa-user"></i> Officer Login
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div>
+      <div class="hero-main">Welcome to Janhit Portal</div>
+      <div class="hero-sub">जनहित पोर्टल — Your civic complaints & grievance platform</div>
+    </div>
+  </section>
+
+  <!-- Feature cards -->
+  <main class="features">
+    <article class="card">
+      <h4>File Complaint</h4>
+      <p>Submit problem with photo, audio, & location  </p>
+    
+    </article>
+    <article class="card">
+      <h4>Complaint Status</h4>
+      <p>Check updates and tracking   </p>
+    </article>
+    <article class="card">
+      <h4>Send Reminder</h4>
+      <p>Set reminders and notifications   </p>
+    </article>
+    <article class="card">
+      <h4>Feedback</h4>
+      <p>Rate the service and give suggestions   </p>
+    </article>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    © <span id="year"></span> Janhit Portal
+  </footer>
+
+  <script>
+    document.getElementById('year').innerText = new Date().getFullYear();
+  </script>
+</body>
+</html>
