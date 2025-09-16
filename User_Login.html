@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Registration Portal - Janhit Nivaran</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+    }
+
+    /* Header */
+    header {
+      background: #ffffff;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      border-bottom: 2px solid #0073e6;
+    }
+    .header-content {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .logo {
+      height: 80px;
+      width: 100px;
+    }
+    .title {
+      font-size: 32px;
+      font-weight: bold;
+      color: #0073e6;
+    }
+
+    /* Sub-header */
+    .sub-header {
+      background: #0073e6;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    /* Container */
+    .container {
+      width: 90%;
+      max-width: 500px;
+      margin: 30px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input[type="text"], input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    /* Captcha */
+    .captcha-box {
+      display: flex;
+      align-items: center;   /* vertical alignment */
+      gap: 10px;
+      flex-wrap: wrap;       /* wraps on small screens */
+      margin-top: 10px;
+    }
+    .captcha-image {
+      font-weight: bold;
+      font-size: 20px;
+      background: #f0f0f0;
+      padding: 10px 15px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      letter-spacing: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 18px;
+      min-width: 120px;
+    }
+    #captchaInput {
+      flex: 1;
+      min-width: 120px;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      box-sizing: border-box;
+      height: 40px;
+    }
+    .refresh {
+      cursor: pointer;
+      font-size: 20px;
+      color: #0073e6;
+      transition: transform 0.3s ease;
+      padding-top: 5px;
+    }
+    .refresh:active {
+      transform: rotate(360deg);
+    }
+
+    /* Buttons */
+    .buttons {
+      margin-top: 25px;
+      display: flex;
+      justify-content: space-between;
+    }
+    button {
+      background: #0073e6;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background: #005bb5;
+    }
+    .resend {
+      background: orange;
+      padding-top: 5px;
+      margin-top: 7px;
+    }
+
+    /* Error */
+    .error {
+      color: red;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 400px) {
+      .captcha-box {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      #captchaInput, .captcha-image {
+        width: 100%;
+        height: 42px;
+      }
+      .refresh {
+        align-self: flex-end;
+        margin-top: 5px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="header-content">
+      <img src="c:\Users\HP\Downloads\ChatGPT Image Sep 16, 2025, 11_37_55 AM.png " alt="Logo" class="logo">
+      <span class="title">Janhit Nivaran</span>
+    </div>
+  </header>
+
+  <!-- Sub-header -->
+  <div class="sub-header">Registration Portal</div>
+
+  <!-- Form Container -->
+  <div class="container">
+    <form id="registrationForm">
+      <label for="aadhar">Aadhaar Number:</label>
+      <input type="text" id="aadhar" placeholder="Enter Aadhaar Number" required pattern="\d{12}" maxlength="12">
+
+      <label for="otp">OTP:</label>
+      <input type="number" id="otp" placeholder="Enter OTP" required>
+      <button type="button" class="resend" onclick="resendOtp()">Resend OTP</button>
+
+      <label for="captcha">Captcha:</label>
+      <div class="captcha-box">
+        <span class="captcha-image" id="captchaText"></span>
+        <input type="text" id="captchaInput" placeholder="Enter Captcha" required>
+        <span class="refresh" onclick="generateCaptcha()">&#x21bb;</span>
+      </div>
+
+      <p id="errorMsg" class="error"></p>
+
+      <div class="buttons">
+        <button type="button" onclick="goHome()">Home</button>
+        <button type="submit">Submit</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    let currentCaptcha = "";
+
+    // Generate random 5-digit captcha
+    function generateCaptcha() {
+      currentCaptcha = Math.floor(10000 + Math.random() * 90000).toString();
+      document.getElementById("captchaText").innerText = currentCaptcha;
+      document.getElementById("errorMsg").innerText = "";
+    }
+
+    // Validate form
+    document.getElementById("registrationForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const captchaInput = document.getElementById("captchaInput").value;
+
+      if (captchaInput !== currentCaptcha) {
+        document.getElementById("errorMsg").innerText = "Invalid Captcha. Please try again.";
+        generateCaptcha();
+        return;
+      }
+
+      alert("Form submitted successfully!");
+      // Here you can send data to backend with fetch()
+    });
+
+    // Resend OTP (dummy simulation)
+    function resendOtp() {
+      alert("OTP has been resent to your registered mobile number.");
+    }
+
+    // Go home
+    function goHome() {
+      window.location.href = "index.html"; // replace with actual home page
+    }
+
+    // Load captcha on page load
+    window.onload = generateCaptcha;
+  </script>
+</body>
+</html>

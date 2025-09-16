@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard - Janhit Nivaran</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+    }
+
+    /* Header with logo */
+    header {
+      background: #ffffff;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 2px solid #0073e6;
+    }
+    .header-content {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .logo {
+      height: 70px;
+      width: 70px;
+    }
+    .title {
+      font-size: 22px;
+      font-weight: bold;
+      color: #0073e6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 20px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+    }
+    .top-bar {
+      margin-bottom: 15px;
+    }
+    .search-box input {
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      width: 280px;
+    }
+    .filters {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    .filters select {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    table th, table td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+    }
+    table th {
+      background: #0073e6;
+      color: white;
+    }
+    .status {
+      padding: 6px 12px;
+      border-radius: 6px;
+      color: white;
+      font-weight: bold;
+      display: inline-block;
+      min-width: 100px;
+    }
+    .pending { background: red; }
+    .in-progress { background: orange; }
+    .resolved { background: green; }
+    #map {
+      height: 400px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    .buttons {
+      text-align: right;
+    }
+    button {
+      background: #0073e6;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background: #005bb5;
+    }
+    .update-select {
+      padding: 5px;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header with logo -->
+  <header>
+    <div class="header-content">
+      <img src="c:\Users\HP\Downloads\ChatGPT Image Sep 16, 2025, 11_37_55 AM.png " alt="Logo" class="logo">
+      <span class="title">Janhit Nivaran - Admin Dashboard</span>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- Search Bar -->
+    <div class="top-bar">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search by ID, description, location...">
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters">
+      <select id="filterLocation">
+        <option value="">Filter by Location</option>
+        <option value="Ranchi">Ranchi</option>
+        <option value="Dhanbad">Dhanbad</option>
+        <option value="Jamshedpur">Jamshedpur</option>
+      </select>
+      <select id="filterDept">
+        <option value="">Filter by Department</option>
+        <option value="PWD">PWD</option>
+        <option value="Electricity">Electricity</option>
+      </select>
+      <select id="filterPriority">
+        <option value="">Filter by Priority</option>
+        <option value="1">Low</option>
+        <option value="2">Medium</option>
+        <option value="3">High</option>
+      </select>
+    </div>
+
+    <!-- Complaints Table -->
+    <table id="complaintTable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Description</th>
+          <th>Location</th>
+          <th>Department</th>
+          <th>Priority</th>
+          <th>Status</th>
+          <th>Update Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-coords="23.3441,85.3096">
+          <td>101</td>
+          <td>Broken road near market</td>
+          <td>Ranchi</td>
+          <td>PWD</td>
+          <td>3</td>
+          <td><span class="status pending">Pending</span></td>
+          <td>
+            <select class="update-select" onchange="updateStatus(this)">
+              <option value="">--Select--</option>
+              <option value="pending">Pending</option>
+              <option value="in-progress">In-Progress</option>
+              <option value="resolved">Resolved</option>
+            </select>
+          </td>
+        </tr>
+        <tr data-coords="23.7957,86.4304">
+          <td>102</td>
+          <td>Electricity outage in sector 5</td>
+          <td>Dhanbad</td>
+          <td>Electricity</td>
+          <td>2</td>
+          <td><span class="status in-progress">In-Progress</span></td>
+          <td>
+            <select class="update-select" onchange="updateStatus(this)">
+              <option value="">--Select--</option>
+              <option value="pending">Pending</option>
+              <option value="in-progress">In-Progress</option>
+              <option value="resolved">Resolved</option>
+            </select>
+          </td>
+        </tr>
+        <tr data-coords="22.8046,86.2029">
+          <td>103</td>
+          <td>Street light not working</td>
+          <td>Jamshedpur</td>
+          <td>Electricity</td>
+          <td>1</td>
+          <td><span class="status resolved">Resolved</span></td>
+          <td>
+            <select class="update-select" onchange="updateStatus(this)">
+              <option value="">--Select--</option>
+              <option value="pending">Pending</option>
+              <option value="in-progress">In-Progress</option>
+              <option value="resolved">Resolved</option>
+            </select>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Heatmap -->
+    <div id="map"></div>
+
+    <!-- Buttons -->
+    <div class="buttons">
+      <button onclick="goHome()">Home</button>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    const filters = {
+      location: document.getElementById("filterLocation"),
+      dept: document.getElementById("filterDept"),
+      priority: document.getElementById("filterPriority")
+    };
+    const table = document.getElementById("complaintTable").getElementsByTagName("tbody")[0];
+    const searchInput = document.getElementById("searchInput");
+
+    // Init map
+    const map = L.map('map').setView([23.61, 85.28], 7);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18}).addTo(map);
+    let markersLayer = L.layerGroup().addTo(map);
+
+    function applyFilters() {
+      const rows = table.getElementsByTagName("tr");
+      const searchText = searchInput.value.toLowerCase();
+
+      for (let row of rows) {
+        const location = row.cells[2].innerText;
+        const dept = row.cells[3].innerText;
+        const priority = row.cells[4].innerText;
+        const rowText = row.innerText.toLowerCase();
+
+        let show = true;
+        if (filters.location.value && filters.location.value !== location) show = false;
+        if (filters.dept.value && filters.dept.value !== dept) show = false;
+        if (filters.priority.value && filters.priority.value !== priority) show = false;
+        if (searchText && !rowText.includes(searchText)) show = false;
+
+        row.style.display = show ? "" : "none";
+      }
+
+      updateMap();
+    }
+
+    Object.values(filters).forEach(f => f.addEventListener("change", applyFilters));
+    searchInput.addEventListener("keyup", applyFilters);
+
+    // Update complaint status
+    function updateStatus(selectElement) {
+      const statusCell = selectElement.closest("tr").cells[5].querySelector(".status");
+      const value = selectElement.value;
+      if (value === "pending") {
+        statusCell.textContent = "Pending";
+        statusCell.className = "status pending";
+      } else if (value === "in-progress") {
+        statusCell.textContent = "In-Progress";
+        statusCell.className = "status in-progress";
+      } else if (value === "resolved") {
+        statusCell.textContent = "Resolved";
+        statusCell.className = "status resolved";
+      }
+      updateMap();
+    }
+
+    // Draw map markers based on visible rows
+    function updateMap() {
+      markersLayer.clearLayers();
+      const rows = table.getElementsByTagName("tr");
+
+      for (let row of rows) {
+        if (row.style.display === "none") continue;
+        const coords = row.getAttribute("data-coords").split(",");
+        const location = row.cells[2].innerText;
+        const priority = row.cells[4].innerText;
+        const status = row.cells[5].innerText;
+
+        // Priority-based color
+        let color = "green";
+        if (priority === "2") color = "orange";
+        if (priority === "3") color = "red";
+
+        const marker = L.circleMarker(coords, {
+          radius: 10,
+          color: color,
+          fillColor: color,
+          fillOpacity: 0.7
+        }).addTo(markersLayer);
+
+        marker.bindPopup(`<b>${location}</b><br>Status: ${status}<br>Priority: ${priority}`);
+      }
+    }
+
+    // Initial map load
+    updateMap();
+
+    function goHome() {
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>

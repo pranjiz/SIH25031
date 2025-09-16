@@ -1,0 +1,82 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Registration Portal - Janhit Nivaran</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Online Registration Portal</h2>
+
+    <form id="regForm">
+      <!-- Aadhaar Input -->
+      <label for="aadhaar">Enter Aadhaar Number *</label>
+      <input type="text" id="aadhaar" placeholder="Enter 12-digit Aadhaar number" maxlength="12" required>
+
+      <!-- OTP Section -->
+      <div class="otp-section">
+        <button type="button" id="sendOtp" class="btn-send">SEND OTP</button>
+        <button type="button" id="resendOtp" class="btn-send">RESEND OTP</button>
+        <input type="text" id="otp" placeholder="Enter OTP" maxlength="6">
+      </div>
+
+      <!-- Captcha Section -->
+      <label for="captcha-input">Enter captcha *</label>
+      <div class="captcha">
+        <input type="text" id="captcha-input" placeholder="Enter captcha" required>
+        <span class="captcha-code" id="captcha-code"></span>
+        <span class="refresh" onclick="generateCaptcha()">🔄</span>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="btn-submit">SUBMIT</button>
+    </form>
+  </div>
+
+  <script>
+    let captchaValue = "";
+
+    // Generate captcha
+    function generateCaptcha() {
+      captchaValue = Math.floor(100000 + Math.random() * 900000).toString();
+      document.getElementById("captcha-code").textContent = captchaValue;
+    }
+
+    // OTP Simulation
+    document.getElementById("sendOtp").addEventListener("click", function() {
+      const aadhaar = document.getElementById("aadhaar").value;
+      if (!/^\d{12}$/.test(aadhaar)) {
+        alert("❌ Enter a valid 12-digit Aadhaar number before requesting OTP.");
+        return;
+      }
+      alert("✅ OTP sent to Aadhaar-linked mobile.");
+    });
+
+    // Validate form
+    document.getElementById("regForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      const aadhaar = document.getElementById("aadhaar").value;
+      const enteredCaptcha = document.getElementById("captcha-input").value;
+
+      if (!/^\d{12}$/.test(aadhaar)) {
+        alert("❌ Please enter a valid 12-digit Aadhaar number.");
+        return;
+      }
+
+      if (enteredCaptcha !== captchaValue) {
+        alert("❌ Wrong captcha. Try again.");
+        generateCaptcha();
+        return;
+      }
+
+      alert("✅ Form submitted successfully!");
+    });
+
+    // Generate captcha on load
+    window.onload = generateCaptcha;
+  </script>
+</body>
+</html>
+  

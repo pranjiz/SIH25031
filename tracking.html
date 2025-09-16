@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track Complaint Status - Janhit Nivaran</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+      width: 100%;
+      max-width: 450px;
+      margin: 20px;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      background: #fff;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      justify-content: center;
+    }
+    .header img {
+      height: 70px;
+      margin-right: 10px;
+      width: 80px;
+    }
+    .header span {
+      font-size: 30px;
+      font-weight: bold;
+      color: #007bff;
+      white-space: nowrap;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 10px;
+      color: #222;
+      font-size: 20px;
+    }
+    .note {
+      font-size: 12px;
+      color: #555;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    /* Captcha */
+    .captcha-container {
+      display: flex;
+      align-items: center;
+      margin: 15px 0;
+      position: relative;
+    }
+    #captchaCanvas {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      height: 60px;
+      width: 40%;
+      display: block;
+    }
+    #refreshCaptcha {
+      position: absolute;
+      left: 200px;
+      background: transparent;
+      border: none;
+      font-size: 20px;
+      color: #007bff;
+      cursor: pointer;
+    }
+    #refreshCaptcha:hover {
+      color: #0056b3;
+    }
+
+    /* Buttons */
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+    .buttons button {
+      flex: 1;
+      margin: 0 5px;
+      padding: 12px;
+      font-size: 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      color: #fff;
+    }
+    .submit {
+      background: #28a745;
+    }
+    .reset {
+      background: #ffc107;
+    }
+
+    /* Responsive */
+    @media(max-width: 500px) {
+      .header span {
+        font-size: 18px;
+      }
+      h2 {
+        font-size: 18px;
+      }
+      #captchaCanvas {
+        height: 50px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header with logo -->
+    <div class="header">
+      <img src="c:\Users\HP\Downloads\ChatGPT Image Sep 16, 2025, 11_37_55 AM.png " alt="Logo">
+      <span>Janhit Nivaran</span>
+    </div>
+
+    <h2 id="title">Track Complaint Status</h2>
+    <!--<p class="note" id="note">NOTE: Details of resolved references up to 3 months ago can be seen through Jansunwai portal only</p>-->
+
+    <form id="complaintForm">
+      <label for="complaintNo">Complaint No *</label>
+      <input type="text" id="complaintNo" required placeholder="Enter reference number">
+
+      <label for="aadhaar">Aadhaar Number *</label>
+      <input type="text" id="aadhaar" required placeholder="Enter Aadhaar number">
+
+      <label for="mobile">Mobile Number *</label>
+      <input type="text" id="mobile" required placeholder="Enter mobile number">
+
+      <div class="captcha-container">
+        <canvas id="captchaCanvas"></canvas>
+        <button type="button" id="refreshCaptcha"><i class="fas fa-sync-alt"></i></button>
+      </div>
+
+      <label for="captchaInput">Enter Captcha Digits *</label>
+      <input type="text" id="captchaInput" required placeholder="Enter the captcha numbers">
+
+      <div class="buttons">
+        <button type="submit" class="submit">SUBMIT IT</button>
+        <button type="reset" class="reset">HOME</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    let generatedCaptcha = "";
+
+    function generateCaptcha() {
+      generatedCaptcha = "";
+      for (let i = 0; i < 6; i++) {
+        generatedCaptcha += Math.floor(Math.random() * 10).toString();
+      }
+      drawCaptcha(generatedCaptcha);
+    }
+
+    function drawCaptcha(captchaText) {
+      const canvas = document.getElementById("captchaCanvas");
+      const ctx = canvas.getContext("2d");
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = "#f8f8f8";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.font = "32px Arial Black";
+      ctx.fillStyle = "#000";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(captchaText, canvas.width / 2, canvas.height / 2);
+    }
+
+    window.onload = generateCaptcha;
+    document.getElementById("refreshCaptcha").addEventListener("click", generateCaptcha);
+
+    document.getElementById("complaintForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const userCaptcha = document.getElementById("captchaInput").value;
+      if (userCaptcha === generatedCaptcha) {
+        alert("✅ Complaint submitted successfully!");
+      } else {
+        alert("❌ Invalid captcha, please try again.");
+        generateCaptcha();
+      }
+    });
+  </script>
+</body>
+</html>

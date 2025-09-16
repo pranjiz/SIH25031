@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IGRS | Log in</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: url('https://www.transparenttextures.com/patterns/asfalt-light.png'),
+                  linear-gradient(135deg, #0a4d78, #083c5c);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-box {
+      background: #f9f9f9;
+      border: 1px solid #ccc;
+      width: 350px;
+      max-width: 95%;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+      overflow: hidden;
+      text-align: center;
+    }
+
+    /* 🔹 Logo placement */
+    .logo {
+      padding: 15px 0 5px 0;
+      background: #fff;
+    }
+    .logo img {
+      max-width: 100px;
+      height: auto;
+    }
+
+    .login-header {
+      background: #0073b7;
+      color: #fff;
+      padding: 12px;
+      font-weight: bold;
+      font-size: 17px;
+      text-transform: uppercase;
+    }
+
+    .login-body {
+      padding: 20px;
+      text-align: left;
+    }
+
+    .login-body input[type="text"],
+    .login-body input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 12px;
+      border: 1px solid #999;
+      border-radius: 2px;
+      font-size: 14px;
+    }
+
+    .captcha {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .captcha-code {
+      background: black;
+      color: limegreen;
+      font-weight: bold;
+      font-size: 20px;
+      letter-spacing: 2px;
+      padding: 6px 12px;
+      border-radius: 2px;
+      text-align: center;
+      min-width: 90px;
+    }
+
+    .refresh-btn {
+      background: transparent;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      margin: 0 8px;
+      color: #0073b7;
+    }
+
+    .captcha input {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #999;
+      border-radius: 2px;
+      font-size: 14px;
+    }
+
+    .options {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      font-size: 13px;
+      color: #333;
+    }
+
+    .options input {
+      margin-right: 5px;
+    }
+
+    .login-body button {
+      width: 100%;
+      background: #0073b7;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 2px;
+      font-size: 15px;
+      cursor: pointer;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .login-body button:hover {
+      background: #005f95;
+    }
+
+    .forgot-password {
+      text-align: center;
+      margin: 15px 0;
+    }
+
+    .forgot-password a {
+      text-decoration: none;
+      background: #0073b7;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 2px;
+      font-size: 14px;
+      display: inline-block;
+    }
+
+    .home-btn {
+      text-align: center;
+      padding: 12px;
+      background: #0073b7;
+    }
+
+    .home-btn a {
+      text-decoration: none;
+      color: white;
+      font-size: 14px;
+      display: inline-block;
+    }
+
+    /* 📱 Mobile responsiveness */
+    @media (max-width: 480px) {
+      .login-box {
+        width: 95%;
+      }
+      .login-header {
+        font-size: 15px;
+      }
+      .login-body {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-box">
+    <!-- 🔹 Logo section -->
+    <div class="logo">
+      <img src="ChatGPT Image Sep 9, 2025, 08_36_41 AM.png" alt="Janhit Nivaran Logo">
+    </div>
+
+    <div class="login-header">Officer Login</div>
+    <div class="login-body">
+      <input type="text" id="userid" placeholder="User ID">
+      <input type="password" id="password" placeholder="Password">
+
+      <div class="captcha">
+        <div class="captcha-code" id="captcha">123456</div>
+        <button class="refresh-btn" onclick="generateCaptcha()">↻</button>
+        <input type="text" id="captchaInput" placeholder="Enter Captcha">
+      </div>
+
+      <div class="options">
+        <input type="checkbox" id="remember">
+        <label for="remember">Remember me</label>
+      </div>
+
+      <button type="button" onclick="validateLogin()">Sign In</button>
+
+      <div class="forgot-password">
+        <a href="#">Forgot Password</a>
+      </div>
+    </div>
+
+    <div class="home-btn">
+      <a href="#">🏠 Home</a>
+    </div>
+  </div>
+
+  <script>
+    function generateCaptcha() {
+      let captcha = '';
+      for (let i = 0; i < 6; i++) {
+        captcha += Math.floor(Math.random() * 10);
+      }
+      document.getElementById("captcha").innerText = captcha;
+    }
+
+    function validateLogin() {
+      const enteredCaptcha = document.getElementById("captchaInput").value.trim();
+      const actualCaptcha = document.getElementById("captcha").innerText.trim();
+
+      if (enteredCaptcha === "") {
+        alert("Please enter the captcha.");
+        return;
+      }
+
+      if (enteredCaptcha !== actualCaptcha) {
+        alert("Incorrect captcha. Please try again.");
+        generateCaptcha();
+        document.getElementById("captchaInput").value = "";
+        return;
+      }
+
+      const userid = document.getElementById("userid").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (userid === "" || password === "") {
+        alert("Please enter User ID and Password.");
+        return;
+      }
+
+      alert("Login successful!");
+    }
+
+    window.onload = generateCaptcha;
+  </script>
+
+</body>
+</html>

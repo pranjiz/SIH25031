@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Grievance Form - Janhit Nivaran</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #0073e6; /* Blue background outside body part */
+    }
+    .container {
+      max-width: 700px;
+      margin: 30px auto;
+      background: white;
+      border-radius: 10px;
+      padding: 20px 30px;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+    }
+    header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 10px;
+      height: auto ;
+    }
+    header img {
+      height: 90px;
+      width: 110px;
+      margin-right: 15px;
+    }
+    header h1 {
+      color: #0073e6;
+      font-size: 40px;
+      margin: 0;
+    }
+    /* Make all form fields uniform */
+    input[type="text"],
+    input[type="file"],
+    textarea,
+    select {
+        width: 100%;
+        box-sizing: border-box;   /* Ensures padding doesn’t break width */
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+        margin-top: 5px;
+    }
+    textarea {
+        min-height: 100px;   /* So it looks proportional */
+    }
+    input[type="file"] {
+        padding: 5px;        /* File input has its own style */
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+      color: #333;
+    }
+    textarea, input, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    textarea {
+      resize: vertical;
+    }
+    .rating {
+      display: flex;
+      gap: 10px;
+      clear: none;
+      margin-top: 3px;
+    }
+    /*.rating label {
+      font-weight: normal;
+      color: #444;
+      padding: 0px 1em 0px 8px;
+    }*/
+    .rating label {
+        display: flex;
+        align-items: center;  /* Vertically center radio and text */
+        gap: 10px;             /* Small space between radio and number */
+    }
+    .rating input[type="radio"] {
+        margin: 0;  /* Remove default top spacing */
+    }
+
+    
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 25px;
+    }
+    button {
+      background: #00cbe6;
+      color: white;
+      padding: 5px 5px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    button:hover {
+      background: #005bb5;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <img src="c:\Users\HP\Downloads\ChatGPT Image Sep 16, 2025, 11_37_55 AM.png " alt="Logo">
+      <h1>Janhit Nivaran</h1>
+    </header>
+
+    <form id="grievanceForm">
+      <!-- Description -->
+      <label for="desc">Description (Text)</label>
+      <textarea id="desc" required></textarea>
+
+      <!-- Audio Upload -->
+      <label for="audio">Upload Audio Description</label>
+      <input type="file" id="audio" accept="audio/*" >
+
+      <!-- Geolocation -->
+      <label for="geo">Geolocation</label>
+      <input type="text" id="geo" placeholder="Click to capture location" readonly required>
+      <button type="button" onclick="getLocation()">📍 Get Location</button>
+
+      <!-- Image/Video Upload -->
+      <label for="media">Upload Image/Video</label>
+      <input type="file" id="media" accept="image/*,video/*" required>
+
+      <!-- Department -->
+      <label for="dept">Select Department</label>
+      <select id="dept" required>
+        <option value="">-- Select --</option>
+        <option value="pwd">PWD</option>
+        <option value="electricity">Electricity</option>
+      </select>
+
+      <!-- Danger Rating -->
+      <label>How dangerous is it for lives?</label>
+      <div class="rating">
+        <label><input type="radio" name="danger" value="1" required> 1</label>
+        <label><input type="radio" name="danger" value="2"> 2</label>
+        <label><input type="radio" name="danger" value="3"> 3</label>
+      </div>
+
+      <!-- Buttons -->
+      <div class="buttons">
+        <button type="submit">Submit</button>
+        <button type="button" onclick="goHome()">Home</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // Geolocation Capture
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          pos => {
+            document.getElementById("geo").value =
+              pos.coords.latitude + ", " + pos.coords.longitude;
+          },
+          () => alert("Unable to fetch location")
+        );
+      } else {
+        alert("Geolocation not supported");
+      }
+    }
+
+    // Form validation
+    document.getElementById("grievanceForm").addEventListener("submit", function(e) {
+      if (!this.checkValidity()) {
+        e.preventDefault();
+        alert("Please fill all required fields!");
+      } else {
+        e.preventDefault();
+        alert("Form submitted successfully!");
+        this.reset();
+      }
+    });
+
+    // Home button
+    function goHome() {
+      window.location.href = "index.html"; // Change to your actual home page
+    }
+  </script>
+</body>
+</html>

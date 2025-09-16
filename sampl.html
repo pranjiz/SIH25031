@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Dashboard - Janhit Nivaran</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+    }
+
+    /* Header */
+    header {
+      background: #ffffff;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      border-bottom: 2px solid #0073e6;
+    }
+    .header-content {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .logo {
+      height: 40px;
+      width: auto;
+    }
+    .title {
+      font-size: 22px;
+      font-weight: bold;
+      color: #0073e6;
+    }
+
+    /* Container */
+    .container {
+      max-width: 900px;
+      margin: 20px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+    }
+
+    /* Profile Section */
+    .profile {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+    .profile img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 2px solid #0073e6;
+    }
+    .profile-details h2 {
+      margin: 0;
+      color: #0073e6;
+    }
+    .profile-details p {
+      margin: 5px 0;
+      color: #333;
+    }
+
+    /* Complaints Section */
+    .complaints {
+      margin-top: 20px;
+    }
+    .complaints h3 {
+      color: #0073e6;
+      margin-bottom: 15px;
+    }
+    .complaint-card {
+      background: #f9f9f9;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border-left: 5px solid #0073e6;
+    }
+    .complaint-card p {
+      margin: 5px 0;
+    }
+    .status {
+      padding: 4px 10px;
+      border-radius: 6px;
+      color: white;
+      font-weight: bold;
+      display: inline-block;
+    }
+    .pending { background: red; }
+    .in-progress { background: orange; }
+    .resolved { background: green; }
+
+    /* Buttons */
+    .buttons {
+      margin-top: 20px;
+      text-align: right;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    .buttons button {
+      background: #0073e6;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .buttons button:hover {
+      background: #005bb5;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="header-content">
+      <img src="logo.png" alt="Logo" class="logo">
+      <span class="title">Janhit Nivaran</span>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Profile Section -->
+    <div class="profile">
+      <img src="user.jpg" alt="User Photo">
+      <div class="profile-details">
+        <h2 id="userName">Rahul Kumar</h2>
+        <p><strong>Aadhaar Address:</strong> <span id="userAddress">H.No. 12, Sector 4, Ranchi, Jharkhand</span></p>
+      </div>
+    </div>
+
+    <!-- Complaints Section -->
+    <div class="complaints">
+      <h3>My Complaints</h3>
+      <div id="complaintsList">Loading complaints...</div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="buttons">
+      <button onclick="goHome()">Home</button>
+      <button onclick="registerComplaint()">Register New Complaint</button>
+    </div>
+  </div>
+
+  <script>
+    // Fetch complaints from backend API
+    async function loadComplaints() {
+      const container = document.getElementById("complaintsList");
+      container.innerHTML = "Loading complaints...";
+
+      try {
+        // Example API endpoint (replace with your backend URL)
+        const response = await fetch("/api/complaints");
+        if (!response.ok) throw new Error("Failed to fetch complaints");
+
+        const complaints = await response.json();
+        container.innerHTML = "";
+
+        if (complaints.length === 0) {
+          container.innerHTML = "<p>No complaints found.</p>";
+          return;
+        }
+
+        complaints.forEach(c => {
+          const card = document.createElement("div");
+          card.classList.add("complaint-card");
+
+          card.innerHTML = `
+            <p><strong>ID:</strong> ${c.id}</p>
+            <p><strong>Description:</strong> ${c.description}</p>
+            <p><strong>Status:</strong> 
+              <span class="status ${c.status}">
+                ${c.status.charAt(0).toUpperCase() + c.status.slice(1)}
+              </span>
+            </p>
+          `;
+          container.appendChild(card);
+        });
+      } catch (error) {
+        container.innerHTML = `<p style="color:red;">Error: ${error.message}</p>`;
+      }
+    }
+
+    // Load on page start
+    window.onload = loadComplaints;
+
+    // Navigation buttons
+    function goHome() {
+      window.location.href = "index.html"; 
+    }
+    function registerComplaint() {
+      window.location.href = "register.html"; 
+    }
+  </script>
+</body>
+</html>
